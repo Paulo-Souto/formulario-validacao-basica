@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             submitButton.disabled = true;
             submitButton.textContent = "Enviando...";
 
-            fetch(API_URL, {
+            fetch(`${API_URL}/submit`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
