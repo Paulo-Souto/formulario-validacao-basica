@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameInput = document.getElementById("name");
     const emailInput = document.getElementById("email");
     const messageError = document.getElementById("message-error");
+    const submitButton = form.querySelector("button[type='submit']");
+
     const API_URL = "https://formulario-validacao-basica.onrender.com";
 
     let formWasSubmitted = false;
@@ -25,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nameInput.classList.contains("input-error") || emailInput.classList.contains("input-error")
         );
     }
-console.log(hasErrors()); //Será apagado na branch junto com app.py
+
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         formWasSubmitted = true;
@@ -34,12 +36,13 @@ console.log(hasErrors()); //Será apagado na branch junto com app.py
 
         if (hasErrors() === true) {
             messageError.classList.remove("hidden");
-            console.log("message-error");
         } else {
             messageError.classList.add("hidden");
-            alert("Formulário enviado com sucesso!");
-            //form.reset(); //alterado na branch junto com app.py
-            fetch("${API_URL}", {
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Enviando...";
+
+            fetch(API_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -60,10 +63,13 @@ console.log(hasErrors()); //Será apagado na branch junto com app.py
                     messageError.classList.remove("hidden");
                 }
             })
-            .catch(error => {
-                console.error(error);
+            .catch(() => {
                 messageError.textContent = "Erro ao conectar com o servidor.";
                 messageError.classList.remove("hidden");
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = "Enviar";
             })
         }
     });
