@@ -4,7 +4,7 @@ import json
 import os
 
 app = Flask(__name__)
-CORS(app, origins=['http://127.0.0.1:5500'])
+CORS(app)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ARQUIVO_DADOS = os.path.join(BASE_DIR, 'dados.json')
@@ -75,4 +75,4 @@ def submit():
     }), 200
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("contact-form")
-    const nameInput = document.getElementById("name")
-    const emailInput = document.getElementById("email")
-    const messageError = document.getElementById("message-error")
+    const form = document.getElementById("contact-form");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const messageError = document.getElementById("message-error");
+    const API_URL = "https://formulario-validacao-basica.onrender.com";
 
     let formWasSubmitted = false;
 
@@ -38,7 +39,7 @@ console.log(hasErrors()); //Será apagado na branch junto com app.py
             messageError.classList.add("hidden");
             alert("Formulário enviado com sucesso!");
             //form.reset(); //alterado na branch junto com app.py
-            fetch("http://localhost:5000/submit", {
+            fetch("${API_URL}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
