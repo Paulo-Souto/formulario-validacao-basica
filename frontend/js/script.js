@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nameInput.classList.contains("input-error") || emailInput.classList.contains("input-error")
         );
     }
-console.log(hasErrors());
+console.log(hasErrors()); //Será apagado na branch junto com app.py
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         formWasSubmitted = true;
@@ -37,6 +37,33 @@ console.log(hasErrors());
         } else {
             messageError.classList.add("hidden");
             alert("Formulário enviado com sucesso!");
+            //form.reset(); //alterado na branch junto com app.py
+            fetch("http://localhost:5000/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nome: nameInput.value,
+                    email: emailInput.value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    form.reset();
+                    formWasSubmitted = false;
+                } else {
+                    messageError.textContent = data.message;
+                    messageError.classList.remove("hidden");
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                messageError.textContent = "Erro ao conectar com o servidor.";
+                messageError.classList.remove("hidden");
+            })
         }
     });
 
